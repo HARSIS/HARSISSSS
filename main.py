@@ -1,5 +1,5 @@
 class Player:
-    def __init__(self, Phone_Number, Name_SurN, Age, Type, Camouflage):
+    def __init__(self, Phone_Number, Name, Surn, Age, Type, Camouflage):
         self.Phone_Number = Phone_Number #телефон
         self.Name = Name #имя
         self.Surn = Surn #фамилия
