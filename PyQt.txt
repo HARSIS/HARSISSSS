@@ -1,0 +1,64 @@
+НАЧАЛО:
+
+import sys
+
+from PyQt5.QtWidgets import *
+
+
+class Example(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+	self.setGeometry(, , , )
+        self.setWindowTitle('')
+	
+	"Здесь размещается все что касательно графики, т е все что ниже"
+
+
+КОНЕЦ:
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    ex = Example()
+    ex.show()
+    sys.exit(app.exec())
+
+
+КНОПКА:
+
+self. = QPushButton(, self)
+self..resize(, )
+self..move(, )
+self..clicked.connect(self.)
+
+
+СТРОКА ДЛЯ ВВОДА:
+
+self. = QLineEdit(self)
+self..move(, )
+
+
+ТЕКСТ:
+
+self. = QLabel(self)
+self..setText("")
+self..move(, )
+
+БЕСПОЛЕЗНАЯ ХРЕНЬ:
+
+self. = QLCDNumber(self)
+self..move(, )
+
+ГАЛОЧКИ:
+
+ = QCheckBox('', self)
+.move(, )
+.stateChanged.connect(self.)
+
+ФУНКЦИЯ ДЛЯ ПРОВЕРКИ НАЖАТИЯ КНОПОК И ГАЛОЧЕК:
+
+def (self, ):
+    if  == Qt.Checked:
+    else:
