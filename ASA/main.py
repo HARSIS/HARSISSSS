@@ -4,13 +4,15 @@ import sys
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
 from PyQt5.QtWidgets import QLabel, QLineEdit, QCheckBox, QInputDialog
 from PyQt5.QtGui import *
+from PyQt5.QtCore import Qt
 
 
 class Registration_Window(QWidget):
     def __init__(self):
         super().__init__()
+        self.nums = v = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
         self.initUI()
-        self.cams = ''
+        self.cams = [False, False, False, False, False, False, False]
 
     def initUI(self):
         self.setGeometry(500, 500, 600, 800)
@@ -90,22 +92,135 @@ class Registration_Window(QWidget):
         self.enter_cam = QLabel(self)
         self.enter_cam.setText("Камуфляж")
         self.enter_cam.setFont(QFont('Arial', 14))
-        self.enter_cam.move(22, 225)
+        self.enter_cam.move(22, 250)
 
         self.mc = QCheckBox('MC', self)
-        self.mc.move(177, 225)
-        self.mc.stateChanged.connect(self.app_mc)
+        self.mc.move(177, 250)
+        self.mc.stateChanged.connect(self.MC)
+        self.mc.setFont(QFont('Arial', 13))
 
         self.mox = QCheckBox('MOX', self)
-        self.mox.move(177, 225)
-        self.mox.stateChanged.connect(self.app_mc)
+        self.mox.move(225, 250)
+        self.mox.stateChanged.connect(self.MOX)
+        self.mox.setFont(QFont('Arial', 13))
 
-        self.mc = QCheckBox('MC', self)
-        self.mc.move(177, 225)
-        self.mc.stateChanged.connect(self.app_mc)
+        self.emr = QCheckBox('EMP', self)
+        self.emr.move(283, 250)
+        self.emr.stateChanged.connect(self.EMR)
+        self.emr.setFont(QFont('Arial', 13))
+
+        self.bk = QCheckBox('BK', self)
+        self.bk.move(340, 250)
+        self.bk.stateChanged.connect(self.BK)
+        self.bk.setFont(QFont('Arial', 13))
+
+        self.tan = QCheckBox('TAN', self)
+        self.tan.move(177, 275)
+        self.tan.stateChanged.connect(self.TAN)
+        self.tan.setFont(QFont('Arial', 13))
+
+        self.olive = QCheckBox('OLIVE', self)
+        self.olive.move(232, 275)
+        self.olive.stateChanged.connect(self.OLIVE)
+        self.olive.setFont(QFont('Arial', 13))
+
+        self.other = QCheckBox('ДРУГОЙ', self)
+        self.other.move(303, 275)
+        self.other.stateChanged.connect(self.OTHER)
+        self.other.setFont(QFont('Arial', 13))
+
+        self.enter_type = QLabel(self)
+        self.enter_type.setText("Тип игрока")
+        self.enter_type.setFont(QFont('Arial', 14))
+        self.enter_type.move(22, 300)
+
+        self.choose_type = QPushButton('Выбрать', self)
+        self.choose_type.resize(80, 24)
+        self.choose_type.move(177, 300)
+        self.choose_type.clicked.connect(self.open_choose_win)
+        self.choose_type.setFont(QFont('Arial', 13))
+
+        self.type = QLabel(self)
+        self.type.setText('Выбран тип:')
+        self.type.setFont(QFont('Arial', 13))
+        self.type.move(177, 325)
+
+        self.type2 = QLabel(self)
+        self.type2.setText('                                    ')
+        self.type2.setFont(QFont('Arial', 13))
+        self.type2.move(280, 325)
+
+        self.input = QPushButton('Зарегестрироваться', self)
+        self.input.resize(165, 24)
+        self.input.move(22, 350)
+        self.input.clicked.connect(self.register)
+        self.input.setFont(QFont('Arial', 12))
 
     def open_enter_window(self):
         pass
+
+    def MC(self, a):
+        if a == Qt.Checked:
+            self.cams[0] = True
+        else:
+            self.cams[0] = False
+
+    def MOX(self, a):
+        if a == Qt.Checked:
+            self.cams[1] = True
+        else:
+            self.cams[1] = False
+
+    def EMR(self, a):
+        if a == Qt.Checked:
+            self.cams[2] = True
+        else:
+            self.cams[2] = False
+
+    def BK(self, a):
+        if a == Qt.Checked:
+            self.cams[3] = True
+        else:
+            self.cams[3] = False
+
+    def TAN(self, a):
+        if a == Qt.Checked:
+            self.cams[4] = True
+        else:
+            self.cams[4] = False
+
+    def OLIVE(self, a):
+        if a == Qt.Checked:
+            self.cams[5] = True
+        else:
+            self.cams[5] = False
+
+    def OTHER(self, a):
+        if a == Qt.Checked:
+            self.cams[6] = True
+        else:
+            self.cams[6] = False
+
+    def open_choose_win(self):
+        type, ok_pressed = QInputDialog.getItem(
+            self, "", "Выберете тип игрока (основной)?",
+            ("Штурмовик (до 150м/с)", "SQB (до 120м/c)", "Снайпер (до 170м/c)", "Щитовик"), 1, False)
+        if ok_pressed:
+            self.type.setText('Выбран тип:')
+            self.type2.setText(type)
+
+    def register(self):
+        self.number = list(self.input_number.text())
+        f = ''
+        if self.number[0] == '+':
+            self.number.pop(0)
+            self.number[0] = 8
+        for x in self.number:
+            x = int(x)
+            if x in self.nums:
+                f += str(x)
+        self.number = f
+        self.input_number.setText(self.number)
 
 
 if __name__ == '__main__':

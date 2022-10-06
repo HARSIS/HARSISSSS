@@ -1,5 +1,5 @@
 class Player:
-    def __init__(self, Phone_Number, Name, Surn, Age, Type, Camouflage, Nick):
+    def __init__(self, Phone_Number, Name, Surn, Age, Type, Camouflage, Nick, Team):
         self.Phone_Number = Phone_Number  # телефон
         self.Name = Name  # имя
         self.Surn = Surn  # фамилия
@@ -7,6 +7,7 @@ class Player:
         self.Type = Type  # тип игрока: щитовой/sqb/штурмовой/марксман/снайпер/пулемётчик
         self.Camouflage = Camouflage  # камуфляж: MOX/Multicam/EMR/Black/Tan/Olive/другой
         self.Nick = Nick  # позывной
+        self.Team = Team
 
     def Get_Phone_Number(self):
         return self.Phone_Number
@@ -25,6 +26,9 @@ class Player:
 
     def Get_Camouflage(self):
         return self.Camouflage
+
+    def Get_Team(self):
+        return self.Team
 
     def Set_Phone_Number(self, a):
         self.Phone_Number = a
@@ -49,6 +53,9 @@ class Player:
 
     def Set_Nick(self, a):
         self.Nick = a
+
+    def Set_Team(self, a):
+        self.Team = a
 
 
 class Team:
