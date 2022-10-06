@@ -1,0 +1,12 @@
+def num(num):
+    num = str(num)
+    a = ''
+    for i in range (len(num)):
+        if num[i] == '1' or num[i] == '2' or num[i] == '3' or num[i] == '4' or num[i] == '5' or num[i] == '6' or num[i] == '7' or num[i] == '8' or num[i] == '9' or num[i] == '0':
+            a = a + num[i]
+    if num[0] == '+' and num[1] == '7':
+        a = '8' + a[1:]
+    if len(a) != 11:
+        a = '0'
+    a = int(a)
+    return a
