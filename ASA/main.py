@@ -7,37 +7,37 @@ from PyQt5.QtGui import *
 from PyQt5.QtCore import Qt
 
 
-class Registration_Window(QWidget):
+class Registration_Window(QWidget):  # окно регистрации
     def __init__(self):
         super().__init__()
-        self.nums = v = [1, 2, 3, 4, 5, 6, 7, 8, 9, 0]
+        self.nums = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']  # числа от 1 до 0
         self.initUI()
-        self.cams = [False, False, False, False, False, False, False]
+        self.cams = [False, False, False, False, False, False, False]  # камуфляжи
 
     def initUI(self):
-        self.setGeometry(500, 500, 600, 800)
+        self.setGeometry(500, 500, 415, 430)
         self.setWindowTitle('Регистрация')
 
         self.welcome = QLabel(self)
         self.welcome.setText('<h1 style="color: rgb(0, 0, 0);">Приветствуем!</h1>')
-        self.welcome.move(20, 20)
+        self.welcome.move(65, 20)
         self.welcome.setFont(QFont('Arial', 14))
 
         self.please = QLabel(self)
-        self.please.setText("Пожалуйста, зарегестрируйтесь чтобы продолжить")
-        self.please.move(22, 65)
+        self.please.setText("Зарегистрируйтесь чтобы продолжить")
+        self.please.move(63, 65)
         self.please.setFont(QFont('Arial', 12))
 
-        self.enter = QPushButton('войдите', self)
-        self.enter.resize(70, 22)
-        self.enter.move(215, 94)
+        self.enter = QPushButton('войти', self)
+        self.enter.resize(50, 22)
+        self.enter.move(210, 380)
         self.enter.setFont(QFont('Arial', 12))
         self.enter.clicked.connect(self.open_enter_window)
 
         self.hate = QLabel(self)
-        self.hate.setText("Уже заррегестрированы?")
+        self.hate.setText("Уже заррегистрированы?")
         self.hate.setFont(QFont('Arial', 12))
-        self.hate.move(22, 95)
+        self.hate.move(22, 380)
 
         self.enter_number = QLabel(self)
         self.enter_number.setText("Номер телефона")
@@ -46,7 +46,7 @@ class Registration_Window(QWidget):
 
         self.input_number = QLineEdit(self)
         self.input_number.move(177, 125)
-        self.input_number.resize(200, 24)
+        self.input_number.resize(215, 24)
         self.input_number.setFont(QFont('Arial', 13))
 
         self.enter_pw = QLabel(self)
@@ -56,7 +56,7 @@ class Registration_Window(QWidget):
 
         self.input_pw = QLineEdit(self)
         self.input_pw.move(177, 150)
-        self.input_pw.resize(200, 24)
+        self.input_pw.resize(215, 24)
         self.input_pw.setFont(QFont('Arial', 13))
 
         self.enter_name = QLabel(self)
@@ -66,7 +66,7 @@ class Registration_Window(QWidget):
 
         self.input_name = QLineEdit(self)
         self.input_name.move(177, 175)
-        self.input_name.resize(200, 24)
+        self.input_name.resize(215, 24)
         self.input_name.setFont(QFont('Arial', 13))
 
         self.enter_nick = QLabel(self)
@@ -76,7 +76,7 @@ class Registration_Window(QWidget):
 
         self.input_nick = QLineEdit(self)
         self.input_nick.move(177, 200)
-        self.input_nick.resize(200, 24)
+        self.input_nick.resize(215, 24)
         self.input_nick.setFont(QFont('Arial', 13))
 
         self.enter_date = QLabel(self)
@@ -86,7 +86,7 @@ class Registration_Window(QWidget):
 
         self.input_date = QLineEdit(self)
         self.input_date.move(177, 225)
-        self.input_date.resize(200, 24)
+        self.input_date.resize(215, 24)
         self.input_date.setFont(QFont('Arial', 13))
 
         self.enter_cam = QLabel(self)
@@ -134,30 +134,32 @@ class Registration_Window(QWidget):
         self.enter_type.setFont(QFont('Arial', 14))
         self.enter_type.move(22, 300)
 
-        self.choose_type = QPushButton('Выбрать', self)
-        self.choose_type.resize(80, 24)
-        self.choose_type.move(177, 300)
+        self.choose_type = QPushButton('Выбор', self)
+        self.choose_type.resize(60, 24)
+        self.choose_type.move(115, 300)
         self.choose_type.clicked.connect(self.open_choose_win)
         self.choose_type.setFont(QFont('Arial', 13))
-
-        self.type = QLabel(self)
-        self.type.setText('Выбран тип:')
-        self.type.setFont(QFont('Arial', 13))
-        self.type.move(177, 325)
 
         self.type2 = QLabel(self)
         self.type2.setText('                                    ')
         self.type2.setFont(QFont('Arial', 13))
-        self.type2.move(280, 325)
+        self.type2.move(177, 303)
 
-        self.input = QPushButton('Зарегестрироваться', self)
-        self.input.resize(165, 24)
-        self.input.move(22, 350)
+        self.input = QPushButton('Зарегистрироваться', self)
+        self.input.resize(190, 26)
+        self.input.move(120, 340)
         self.input.clicked.connect(self.register)
-        self.input.setFont(QFont('Arial', 12))
+        self.input.setFont(QFont('Arial', 14))
 
-    def open_enter_window(self):
+        self.error = QLabel(self)
+        self.error.setText('<h1 style="color: rgb(150, 0, 0);">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</h1>')
+        self.error.setFont(QFont('Arial', 7))
+        self.error.move(22, 95)
+
+    def open_enter_window(self):  # открываем окно для входа
         pass
+
+    # функции для добавления камуфляжей
 
     def MC(self, a):
         if a == Qt.Checked:
@@ -201,27 +203,74 @@ class Registration_Window(QWidget):
         else:
             self.cams[6] = False
 
-    def open_choose_win(self):
+    def open_choose_win(self):  # окно выбора типа
         type, ok_pressed = QInputDialog.getItem(
             self, "", "Выберете тип игрока (основной)?",
             ("Штурмовик (до 150м/с)", "SQB (до 120м/c)", "Снайпер (до 170м/c)", "Щитовик"), 1, False)
         if ok_pressed:
-            self.type.setText('Выбран тип:')
             self.type2.setText(type)
+            self.choose_type.setFont(QFont('Arial', 13))
 
-    def register(self):
+    def register(self):  # пробуем зарегистрироваться, если данные корректны открываем основное приложение
+        self.end_number = []
         self.number = list(self.input_number.text())
-        f = ''
-        if self.number[0] == '+':
-            self.number.pop(0)
-            self.number[0] = 8
         for x in self.number:
-            x = int(x)
             if x in self.nums:
-                f += str(x)
-        self.number = f
-        self.input_number.setText(self.number)
+                self.end_number.append(x)
+        if self.end_number:
+            if self.end_number[0] == '7':
+                self.end_number[0] = '8'
+            if len(self.end_number) != 11:
+                self.error.setText('<h1 style="color: rgb(150, 0, 0);">Не корректный номер</h1>')
+                return ''
+            else:
+                self.error.setText('<h1 style="color: rgb(150, 0, 0);"> </h1>')
+        else:
+            self.error.setText('<h1 style="color: rgb(150, 0, 0);">Ведите номер</h1>')
+            return ''
 
+        self.password = self.input_pw.text()
+        if not (self.password):
+            self.error.setText('<h1 style="color: rgb(150, 0, 0);">Ведите пароль</h1>')
+            return ''
+        else:
+            self.error.setText('<h1 style="color: rgb(150, 0, 0);"> </h1>')
+
+        self.name = self.input_name.text()
+        if self.name:
+            self.error.setText('<h1 style="color: rgb(150, 0, 0);"> </h1>')
+        else:
+            self.error.setText('<h1 style="color: rgb(150, 0, 0);">Не корректные фамилия и имя</h1>')
+            return ''
+
+        self.nick = self.input_nick.text()
+        if self.nick:
+            self.error.setText('<h1 style="color: rgb(150, 0, 0);"> </h1>')
+        else:
+            self.error.setText('<h1 style="color: rgb(150, 0, 0);">Не корректный позывной</h1>')
+            return ''
+
+        self.date = self.input_date.text()
+        if self.date and '.' in self.date and len(self.date) == 10:
+            if len(self.date.split('.')) == 3:
+                self.error.setText('<h1 style="color: rgb(150, 0, 0);"> </h1>')
+        elif not (self.date) or len(self.date) != 10 or not ('.' in self.date):
+            self.error.setText('<h1 style="color: rgb(150, 0, 0);">Введите дату в формате 18.10.2022</h1>')
+            return ''
+
+        if True in self.cams:
+            self.error.setText('<h1 style="color: rgb(150, 0, 0);"> </h1>')
+        else:
+            self.error.setText('<h1 style="color: rgb(150, 0, 0);">Выберете хотя бы один камуфляж</h1>')
+            return ''
+
+        if self.type2.text():
+            self.error.setText('<h1 style="color: rgb(150, 0, 0);"> </h1>')
+        else:
+            self.error.setText('<h1 style="color: rgb(150, 0, 0);">Выберете основной тип</h1>')
+            return ''
+
+        print('done')
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
