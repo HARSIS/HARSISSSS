@@ -33,7 +33,7 @@ class Registration_Window(QWidget):  # Создаем окно регистра�
 
         self.enter = QPushButton('войти', self)  # Кнопка для перехода к окну входа
         self.enter.resize(50, 22)
-        self.enter.move(210, 380)
+        self.enter.move(212, 380)
         self.enter.setFont(QFont('Arial', 12))
         self.enter.clicked.connect(self.open_enter_window)
 
@@ -323,6 +323,7 @@ class Registration_Window(QWidget):  # Создаем окно регистра�
         self.con.close()
         '''''''''
 
+
 class Enter_Window(QWidget):  # Создаем окно для входа
     def __init__(self):
         super().__init__()
@@ -369,7 +370,7 @@ class Enter_Window(QWidget):  # Создаем окно для входа
         self.error = QLabel(self)
         self.error.setText('<h1 style="color: rgb(150, 0, 0);">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</h1>')
         self.error.setFont(QFont('Arial', 7))
-        self.error.move(22,98)
+        self.error.move(22, 98)
 
     def open_main_window(self):
         self.end_number = []
@@ -403,7 +404,7 @@ class Enter_Window(QWidget):  # Создаем окно для входа
         if self.cursed_number == str(self.available_phones):
             self.error.setText('<h1 style="color: rgb(150, 0, 0);"> </h1>')
         else:
-            self.error.setText('<h1 style="color: rgb(150, 0, 0);">Не существующий номер</h1>')
+            self.error.setText('<h1 style="color: rgb(150, 0, 0);">Не зарегистрированный номер</h1>')
             return ''
         self.password = self.input_pw.text()
         self.con = sqlite3.connect("ASA.sqlite")
@@ -418,10 +419,8 @@ class Enter_Window(QWidget):  # Создаем окно для входа
             self.error.setText('<h1 style="color: rgb(150, 0, 0);"> </h1>')
             print('done')
         else:
-            self.error.setText('<h1 style="color: rgb(150, 0, 0);">Не верный пароль</h1>')
+            self.error.setText('<h1 style="color: rgb(150, 0, 0);">Неверный пароль</h1>')
             return ''
-
-
 
     def open_registration_window(self):  # Функция возвращения на экран регистрации
         self.Registration_Window = Registration_Window()
