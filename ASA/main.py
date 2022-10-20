@@ -1,6 +1,7 @@
 from Classes import Player, Team, Game, Admin
 
 import sys
+import sqlite3
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
 from PyQt5.QtWidgets import QLabel, QLineEdit, QCheckBox, QInputDialog
 from PyQt5.QtGui import *
@@ -222,9 +223,13 @@ class Registration_Window(QWidget):  # Создаем окно регистра�
         for x in self.number:
             if x in self.nums:
                 self.end_number.append(x)
+        self.phone_number = ''
         if self.end_number:
             if self.end_number[0] == '7':
                 self.end_number[0] = '8'
+
+            for x in self.end_number:
+                self.phone_number += x
             if len(self.end_number) != 11:
                 self.error.setText('<h1 style="color: rgb(150, 0, 0);">Не корректный номер</h1>')
                 return ''
@@ -233,6 +238,19 @@ class Registration_Window(QWidget):  # Создаем окно регистра�
         else:
             self.error.setText('<h1 style="color: rgb(150, 0, 0);">Введите номер телефона</h1>')
             return ''
+        self.con = sqlite3.connect("ASA.sqlite")
+        self.cur = self.con.cursor()
+        self.available_phones = self.cur.execute("""SELECT phone FROM Players
+                WHERE phone = ?""", (int(self.phone_number),)).fetchall()
+        self.cursed_number = '[(' + self.phone_number + ',)]'
+        self.con.commit()
+        self.con.close()
+
+        if self.cursed_number == str(self.available_phones):
+            self.error.setText('<h1 style="color: rgb(150, 0, 0);">Номер телефона занят</h1>')
+            return ''
+        else:
+            self.error.setText('<h1 style="color: rgb(150, 0, 0);"> </h1>')
 
         self.password = self.input_pw.text()
         if not (self.password):
@@ -275,21 +293,50 @@ class Registration_Window(QWidget):  # Создаем окно регистра�
             self.error.setText('<h1 style="color: rgb(150, 0, 0);">Выберете основной тип</h1>')
             return ''
 
-        print('done')
-
+        self.cams_cout = 0
+        self.end_cams = ''
+        for x in self.cams:
+            self.cams_cout += 1
+            if x is True:
+                if self.cams_cout == 1:
+                    self.end_cams = self.end_cams + 'MC, '
+                elif self.cams_cout == 2:
+                    self.end_cams = self.end_cams + 'MOX, '
+                elif self.cams_cout == 3:
+                    self.end_cams = self.end_cams + 'EMR, '
+                elif self.cams_cout == 4:
+                    self.end_cams = self.end_cams + 'BK, '
+                elif self.cams_cout == 5:
+                    self.end_cams = self.end_cams + 'TAN, '
+                elif self.cams_cout == 6:
+                    self.end_cams = self.end_cams + 'OLIVE, '
+                elif self.cams_cout == 7:
+                    self.end_cams = self.end_cams + 'Другой, '
+        self.end_cams = self.end_cams[:-2]
+        print(self.phone_number, self.password, self.name, self.date, self.nick, self.end_cams, self.type2.text())
+        '''''''''
+        self.con = sqlite3.connect("ASA.sqlite")
+        self.cur = self.con.cursor()
+        self.cur.execute("""INSERT INTO Players VALUES (?), (?), (?), (?), (?), (?), (?)""", (
+        self.phone_number, self.password, self.name, self.date, self.nick, self.end_cams, self.type2.text(),))
+        self.con.commit()
+        self.con.close()
+        '''''''''
 
 class Enter_Window(QWidget):  # Создаем окно для входа
     def __init__(self):
         super().__init__()
         self.initUI()
+        self.nums = ['1', '2', '3', '4', '5', '6', '7', '8', '9',
+                     '0']  # Элементы, которые останутся в номере после преобразований
 
     def initUI(self):
-        self.setGeometry(777, 400, 365, 112)
+        self.setGeometry(777, 400, 365, 140)
         self.setWindowTitle('Вход')
 
         self.go_back = QPushButton('Вернуться к регистрации', self)  # Кнопка для возврата на экран регистрации
-        self.go_back.resize(255, 26)
-        self.go_back.move(55, 72)
+        self.go_back.resize(220, 26)
+        self.go_back.move(22, 72)
         self.go_back.clicked.connect(self.open_registration_window)
         self.go_back.setFont(QFont('Arial', 12))
 
@@ -312,6 +359,69 @@ class Enter_Window(QWidget):  # Создаем окно для входа
         self.input_pw.move(177, 44)
         self.input_pw.resize(165, 24)
         self.input_pw.setFont(QFont('Arial', 13))
+
+        self.enter = QPushButton('Войти', self)  # Кнопка для входа
+        self.enter.resize(100, 26)
+        self.enter.move(242, 72)
+        self.enter.clicked.connect(self.open_main_window)
+        self.enter.setFont(QFont('Arial', 12))
+
+        self.error = QLabel(self)
+        self.error.setText('<h1 style="color: rgb(150, 0, 0);">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</h1>')
+        self.error.setFont(QFont('Arial', 7))
+        self.error.move(22,98)
+
+    def open_main_window(self):
+        self.end_number = []
+        self.number = list(self.input_number.text())
+        for x in self.number:
+            if x in self.nums:
+                self.end_number.append(x)
+        self.phone_number = ''
+        if self.end_number:
+            if self.end_number[0] == '7':
+                self.end_number[0] = '8'
+
+            for x in self.end_number:
+                self.phone_number += x
+            if len(self.end_number) != 11:
+                self.error.setText('<h1 style="color: rgb(150, 0, 0);">Не корректный номер</h1>')
+                return ''
+            else:
+                self.error.setText('<h1 style="color: rgb(150, 0, 0);"> </h1>')
+        else:
+            self.error.setText('<h1 style="color: rgb(150, 0, 0);">Введите номер телефона</h1>')
+            return ''
+        self.con = sqlite3.connect("ASA.sqlite")
+        self.cur = self.con.cursor()
+        self.available_phones = self.cur.execute("""SELECT phone FROM Players
+                        WHERE phone = ?""", (int(self.phone_number),)).fetchall()
+        self.cursed_number = '[(' + self.phone_number + ',)]'
+        self.con.commit()
+        self.con.close()
+
+        if self.cursed_number == str(self.available_phones):
+            self.error.setText('<h1 style="color: rgb(150, 0, 0);"> </h1>')
+        else:
+            self.error.setText('<h1 style="color: rgb(150, 0, 0);">Не существующий номер</h1>')
+            return ''
+        self.password = self.input_pw.text()
+        self.con = sqlite3.connect("ASA.sqlite")
+        self.cur = self.con.cursor()
+        self.available_passsword = self.cur.execute("""SELECT password FROM Players
+                                WHERE phone = ?""", (int(self.phone_number),)).fetchall()
+        self.cursed_password = "[('" + self.password + "',)]"
+        self.con.commit()
+        self.con.close()
+        print(self.available_passsword, self.cursed_password)
+        if str(self.available_passsword) == self.cursed_password:
+            self.error.setText('<h1 style="color: rgb(150, 0, 0);"> </h1>')
+            print('done')
+        else:
+            self.error.setText('<h1 style="color: rgb(150, 0, 0);">Не верный пароль</h1>')
+            return ''
+
+
 
     def open_registration_window(self):  # Функция возвращения на экран регистрации
         self.Registration_Window = Registration_Window()
