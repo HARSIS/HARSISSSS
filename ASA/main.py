@@ -15,7 +15,7 @@ class Registration_Window(QWidget):  # окно регистрации
         self.cams = [False, False, False, False, False, False, False]  # камуфляжи
 
     def initUI(self):
-        self.setGeometry(500, 500, 415, 430)
+        self.setGeometry(752, 400, 415, 430)
         self.setWindowTitle('Регистрация')
 
         self.welcome = QLabel(self)
@@ -157,7 +157,9 @@ class Registration_Window(QWidget):  # окно регистрации
         self.error.move(22, 95)
 
     def open_enter_window(self):  # открываем окно для входа
-        pass
+        self.Enter_Window = Enter_Window()
+        self.Enter_Window.show()
+        self.close()
 
     # функции для добавления камуфляжей
 
@@ -206,7 +208,7 @@ class Registration_Window(QWidget):  # окно регистрации
     def open_choose_win(self):  # окно выбора типа
         type, ok_pressed = QInputDialog.getItem(
             self, "", "Выберете тип игрока (основной)?",
-            ("Штурмовик (до 150м/с)", "SQB (до 120м/c)", "Снайпер (до 170м/c)", "Щитовик"), 1, False)
+            ("SQB (до 120м/c)", "Штурмовик (до 150м/с)", "Снайпер (до 170м/c)", "Щитовик"), 1, False)
         if ok_pressed:
             self.type2.setText(type)
             self.choose_type.setFont(QFont('Arial', 13))
@@ -226,7 +228,7 @@ class Registration_Window(QWidget):  # окно регистрации
             else:
                 self.error.setText('<h1 style="color: rgb(150, 0, 0);"> </h1>')
         else:
-            self.error.setText('<h1 style="color: rgb(150, 0, 0);">Ведите номер</h1>')
+            self.error.setText('<h1 style="color: rgb(150, 0, 0);">Введите номер телефона</h1>')
             return ''
 
         self.password = self.input_pw.text()
@@ -271,6 +273,48 @@ class Registration_Window(QWidget):  # окно регистрации
             return ''
 
         print('done')
+
+
+class Enter_Window(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.initUI()
+
+    def initUI(self):
+        self.setGeometry(777, 400, 365, 112)
+        self.setWindowTitle('Вход')
+
+        self.go_back = QPushButton('Вернуться к регистрации', self)
+        self.go_back.resize(255, 26)
+        self.go_back.move(55, 72)
+        self.go_back.clicked.connect(self.open_registration_window)
+        self.go_back.setFont(QFont('Arial', 12))
+
+        self.enter_number = QLabel(self)
+        self.enter_number.setText("Номер телефона")
+        self.enter_number.setFont(QFont('Arial', 14))
+        self.enter_number.move(22, 20)
+
+        self.input_number = QLineEdit(self)
+        self.input_number.move(177, 20)
+        self.input_number.resize(165, 24)
+        self.input_number.setFont(QFont('Arial', 13))
+
+        self.enter_pw = QLabel(self)
+        self.enter_pw.setText("Пароль")
+        self.enter_pw.setFont(QFont('Arial', 14))
+        self.enter_pw.move(22, 44)
+
+        self.input_pw = QLineEdit(self)
+        self.input_pw.move(177, 44)
+        self.input_pw.resize(165, 24)
+        self.input_pw.setFont(QFont('Arial', 13))
+
+    def open_registration_window(self):
+        self.Registration_Window = Registration_Window()
+        self.Registration_Window.show()
+        self.close()
+
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
