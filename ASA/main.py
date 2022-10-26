@@ -11,6 +11,7 @@ from PyQt5.QtCore import Qt
 class Registration_Window(QWidget):  # Создаем окно регистрации
     def __init__(self):
         super().__init__()
+        self.save = False
         self.nums = ['1', '2', '3', '4', '5', '6', '7', '8', '9',
                      '0']  # Элементы, которые останутся в номере после преобразований
         self.initUI()
@@ -144,13 +145,13 @@ class Registration_Window(QWidget):  # Создаем окно регистра�
         self.choose_type.setFont(QFont('Arial', 13))
 
         self.type2 = QLabel(self)
-        self.type2.setText('                                    ')
+        self.type2.setText('                                                                        ')
         self.type2.setFont(QFont('Arial', 13))
         self.type2.move(177, 303)
 
         self.input = QPushButton('Зарегистрироваться', self)
         self.input.resize(190, 26)
-        self.input.move(120, 340)
+        self.input.move(200, 340)
         self.input.clicked.connect(self.register)
         self.input.setFont(QFont('Arial', 14))
 
@@ -158,6 +159,17 @@ class Registration_Window(QWidget):  # Создаем окно регистра�
         self.error.setText('<h1 style="color: rgb(150, 0, 0);">⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀⠀</h1>')
         self.error.setFont(QFont('Arial', 7))
         self.error.move(22, 95)
+
+        self.remember = QCheckBox('Запомнить меня', self)
+        self.remember.move(22, 340)
+        self.remember.stateChanged.connect(self.rem)
+        self.remember.setFont(QFont('Arial', 13))
+
+    def rem(self, a):
+        if a == Qt.Checked:
+            self.save = True
+        else:
+            self.save = False
 
     def open_enter_window(self):  # Открываем окно для входа
         self.Enter_Window = Enter_Window()
@@ -211,7 +223,7 @@ class Registration_Window(QWidget):  # Создаем окно регистра�
     def open_choose_win(self):  # Окно выбора типа
         type, ok_pressed = QInputDialog.getItem(
             self, "", "Выберете тип игрока (основной)?",
-            ("SQB (до 120м/c)", "Штурмовик (до 150м/с)", "Снайпер (до 170м/c)", "Щитовик"), 1, False)
+            ("SQB⠀(до⠀120м/c)", "Штурмовик⠀(до⠀150м/с)", "Снайпер⠀(до⠀170м/c)", "Щитовик"), 1, False)
         if ok_pressed:
             self.type2.setText(type)
             self.choose_type.setFont(QFont('Arial', 13))
@@ -241,11 +253,11 @@ class Registration_Window(QWidget):  # Создаем окно регистра�
         self.con = sqlite3.connect("ASA.sqlite")
         self.cur = self.con.cursor()
         self.available_phones = self.cur.execute("""SELECT phone FROM Players
-                WHERE phone = ?""", (int(self.phone_number),)).fetchall()
-        self.cursed_number = '[(' + self.phone_number + ',)]'
+                        WHERE phone = ?""", (self.phone_number,)).fetchall()
+        self.a = self.cur.execute("""SELECT phone FROM PLAYERS""")
+        self.cursed_number = "[('" + self.phone_number + "',)]"
         self.con.commit()
         self.con.close()
-
         if self.cursed_number == str(self.available_phones):
             self.error.setText('<h1 style="color: rgb(150, 0, 0);">Номер телефона занят</h1>')
             return ''
@@ -314,19 +326,37 @@ class Registration_Window(QWidget):  # Создаем окно регистра�
                     self.end_cams = self.end_cams + 'Другой, '
         self.end_cams = self.end_cams[:-2]
         print(self.phone_number, self.password, self.name, self.date, self.nick, self.end_cams, self.type2.text())
-        '''''''''
         self.con = sqlite3.connect("ASA.sqlite")
         self.cur = self.con.cursor()
-        self.cur.execute("""INSERT INTO Players VALUES (?), (?), (?), (?), (?), (?), (?)""", (
-        self.phone_number, self.password, self.name, self.date, self.nick, self.end_cams, self.type2.text(),))
+        self.cur.execute("""INSERT INTO Players VALUES (?, ?, ?, ?, ?, ?, ?)""", (
+            self.phone_number, self.password, self.name, self.date, self.nick, self.end_cams, self.type2.text()))
         self.con.commit()
         self.con.close()
-        '''''''''
+        self.user = open('User.txt', mode='w')
+        self.user.write(self.phone_number)
+        self.user.write('/')
+        self.user.write(self.password)
+        self.user.write('/')
+        self.user.write(self.name)
+        self.user.write('/')
+        self.user.write(self.date)
+        self.user.write('/')
+        self.user.write(self.nick)
+        self.user.write('/')
+        self.user.write(self.end_cams)
+        self.user.write('/')
+        self.user.write(self.type2.text())
+        if self.save is True:
+            self.user.write('/SAVE')
+        else:
+            self.user.write('/DELETE')
+        self.user.close()
 
 
 class Enter_Window(QWidget):  # Создаем окно для входа
     def __init__(self):
         super().__init__()
+        self.save = False
         self.initUI()
         self.nums = ['1', '2', '3', '4', '5', '6', '7', '8', '9',
                      '0']  # Элементы, которые останутся в номере после преобразований
@@ -396,11 +426,11 @@ class Enter_Window(QWidget):  # Создаем окно для входа
         self.con = sqlite3.connect("ASA.sqlite")
         self.cur = self.con.cursor()
         self.available_phones = self.cur.execute("""SELECT phone FROM Players
-                        WHERE phone = ?""", (int(self.phone_number),)).fetchall()
-        self.cursed_number = '[(' + self.phone_number + ',)]'
+                        WHERE phone = ?""", (self.phone_number,)).fetchall()
+        self.a = self.cur.execute("""SELECT phone FROM PLAYERS""")
+        self.cursed_number = "[('" + self.phone_number + "',)]"
         self.con.commit()
         self.con.close()
-
         if self.cursed_number == str(self.available_phones):
             self.error.setText('<h1 style="color: rgb(150, 0, 0);"> </h1>')
         else:
@@ -414,7 +444,6 @@ class Enter_Window(QWidget):  # Создаем окно для входа
         self.cursed_password = "[('" + self.password + "',)]"
         self.con.commit()
         self.con.close()
-        print(self.available_passsword, self.cursed_password)
         if str(self.available_passsword) == self.cursed_password:
             self.error.setText('<h1 style="color: rgb(150, 0, 0);"> </h1>')
             print('done')
@@ -433,3 +462,4 @@ if __name__ == '__main__':  # Запуск и выключение програ�
     ex = Registration_Window()
     ex.show()
     sys.exit(app.exec())
+
