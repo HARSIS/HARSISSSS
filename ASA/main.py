@@ -332,25 +332,7 @@ class Registration_Window(QWidget):  # Создаем окно регистра�
             self.phone_number, self.password, self.name, self.date, self.nick, self.end_cams, self.type2.text()))
         self.con.commit()
         self.con.close()
-        self.user = open('User.txt', mode='w')
-        self.user.write(self.phone_number)
-        self.user.write('/')
-        self.user.write(self.password)
-        self.user.write('/')
-        self.user.write(self.name)
-        self.user.write('/')
-        self.user.write(self.date)
-        self.user.write('/')
-        self.user.write(self.nick)
-        self.user.write('/')
-        self.user.write(self.end_cams)
-        self.user.write('/')
-        self.user.write(self.type2.text())
-        if self.save is True:
-            self.user.write('/SAVE')
-        else:
-            self.user.write('/DELETE')
-        self.user.close()
+        
 
 
 class Enter_Window(QWidget):  # Создаем окно для входа
