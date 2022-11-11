@@ -1,3 +1,6 @@
+https://evileg.com/ru/post/236/
+
+
 НАЧАЛО:
 
 import sys
